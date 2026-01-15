@@ -1,0 +1,19 @@
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.29.0
+    container_name: audio_inference_envoy
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml --service-cluster front-proxy
+    networks:
+      - audio_inference_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  audio_inference_network:
+    driver: bridge
+

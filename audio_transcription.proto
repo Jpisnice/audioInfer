@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package transcription;
+
+service TranscriptionService {
+  // Bidirectional streaming for real-time transcription
+  rpc StreamTranscribe(stream AudioChunk) returns (stream TranscriptionResponse);
+}
+
+message AudioChunk {
+  bytes audio_data = 1;
+  int32 sample_rate = 2;
+  int32 channels = 3;
+}
+
+message TranscriptionResponse {
+  string text = 1;
+  bool is_final = 2;
+  float confidence = 3;
+  int64 timestamp = 4;
+}
